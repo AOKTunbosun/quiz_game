@@ -48,3 +48,16 @@ class CustomUser(AbstractUser):
             raise ValueError('Could not generate unique registration number')
         else:
             super().save(*args, **kwargs)
+
+
+class Subject(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=50)
+    description = models.CharField(max_length=250)
+    icon = models.CharField(max_length=50)
+    topic_count = models.IntegerField(default=None, null=True)
+
+    def __str__(self):
+        return f'{self.name} with {self.topic_count} topics'
+    
+
