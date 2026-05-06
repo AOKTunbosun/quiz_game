@@ -491,6 +491,7 @@
     .dashboard-header {
         flex-direction: column;
         align-items: flex-start;
+        margin-top: 100px;
     }
 
     .welcome-area {

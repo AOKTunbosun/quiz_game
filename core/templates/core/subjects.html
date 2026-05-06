@@ -1,0 +1,54 @@
+{% extends 'main.html' %}
+{% load static %}
+
+<title>{% block title %}Subjects | My Pace Learn{% endblock title %}</title>
+{% block extracss %}
+<link rel="stylesheet" href="{% static 'core/css/subjects.css' %}">
+{% endblock extracss %}
+
+
+{% block content %}
+
+
+<!-- Subjects Section -->
+<section class="subjects-section">
+  <div class="subjects-container">
+    
+    <!-- Page Header -->
+    <div class="page-header">
+      <h1><i class="fas fa-book-open"></i> Select a Subject</h1>
+      <p>Choose a subject to start learning and testing your knowledge</p>
+    </div>
+
+    <!-- Subjects Grid -->
+    <div class="subjects-grid">
+      
+      <!-- Computer Studies Card (Only subject) -->
+      <div class="subject-card">
+        <div class="subject-icon">
+          <i class="fas fa-microchip"></i>
+        </div>
+        <div class="subject-info">
+          <h3>Computer Studies</h3>
+          <p>Learn about hardware, software, networking, programming basics, and more. Perfect for secondary school students preparing for exams.</p>
+          <div class="subject-stats">
+            <span><i class="fas fa-layer-group"></i> 15+ Topics</span>
+            <span><i class="fas fa-question-circle"></i> 500+ Questions</span>
+          </div>
+          <a href="#" class="btn-explore">
+            Explore Subject <i class="fas fa-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+      
+    </div>
+
+  </div>
+</section>
+
+
+{% endblock content %}
+
+{% block extrajs %}
+<script src="{% static 'core/js/subjects.js' %}"></script>
+{% endblock extrajs %}

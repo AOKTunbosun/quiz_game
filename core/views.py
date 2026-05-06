@@ -163,3 +163,10 @@ class DashboardPage(View):
      
      def post(self, request):
           pass
+     
+
+class SubjectsPage(View):
+    def get(self, request):
+        context = {}
+        return render(request, 'core/subjects.html', context)
+    
