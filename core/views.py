@@ -7,6 +7,8 @@ from django.utils.decorators import method_decorator
 
 import uuid
 
+from .models import Subject, Topic
+
 # Create your views here.
 User = get_user_model()
 
@@ -167,6 +169,51 @@ class DashboardPage(View):
 
 class SubjectsPage(View):
     def get(self, request):
-        context = {}
+        subjects = Subject.objects.all()
+
+        context = {'subjects': subjects}
         return render(request, 'core/subjects.html', context)
-    
+
+
+class TopicsPage(View):
+    def get(self, request, subject_id):
+        topics = Topic.objects.filter(subject=subject_id)
+
+        topic = topics.first()
+        
+        if topic is None:
+            subject = Subject.objects.get(id=subject_id)
+            print(subject)
+            subject_info = {
+                'id': subject.id,
+                'name': subject.name,
+                'description': subject.description,
+                'icon': subject.icon
+                }
+        
+        else:
+            subject_info = {
+                'id': topic.subject.id,
+                'name': topic.subject.name,
+                'description': topic.subject.description,
+                'icon': topic.subject.icon
+                }
+
+
+        topics_list = []
+        for each in topics:
+            each_topic = {
+                    'id': each.id,
+                    'name': each.name,
+                    'short_description': each.description,
+                    'estimated_minutes': each.estimated_minutes,
+                    'question_count': each.question_count,
+                }
+            topics_list.append(each_topic)
+
+        context = {
+            'subject': subject_info,
+            'topics': topics_list
+            }
+        
+        return render(request, 'core/topics.html', context)

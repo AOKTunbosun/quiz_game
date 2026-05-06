@@ -55,9 +55,49 @@ class Subject(models.Model):
     name = models.CharField(max_length=50)
     description = models.CharField(max_length=250)
     icon = models.CharField(max_length=50)
-    topic_count = models.IntegerField(default=None, null=True)
+    topic_count = models.IntegerField(default=0, null=True, blank=True)
 
     def __str__(self):
         return f'{self.name} with {self.topic_count} topics'
     
+    class Meta:
+        ordering = ['name']
+    
 
+class Topic(models.Model):
+    id = models.AutoField(primary_key=True)
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name='topics')
+    name = models.CharField(max_length=150)
+    description = models.CharField(max_length=500)
+    estimated_minutes = models.IntegerField(default=15)
+    question_count = models.IntegerField(default=0, null=True)
+    difficulty = models.CharField(max_length=20, choices=[('easy', 'easy'), ('medium', 'medium'), ('hard', 'hard')])
+    order = models.IntegerField()
+
+    class Meta:
+        ordering = ['order']
+    
+    def __str__(self):
+        return f'{self.name} for {self.subject.name}'
+    
+    def save(self, *args, **kwargs):
+        if not self.id:
+            self.subject.topic_count += 1
+            self.subject.save(update_fields=['topic_count'])
+
+        super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        self.subject.topic_count -= 1
+        self.subject.save(update_fields=['topic_count'])
+        super().delete(*args, **kwargs)
+
+
+class TopicInfo(models.Model):
+    id = models.AutoField(primary_key=True)
+    topic = models.ForeignKey(Topic, on_delete=models.CASCADE, related_name='topic_info')
+    short_note = models.TextField()
+    learning_objectives = models.TextField()
+
+    def __str__(self):
+        return f'{self.topic.name} information'

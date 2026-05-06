@@ -1,0 +1,71 @@
+{% extends 'main.html' %}
+{% load static %}
+
+<title>{% block title %}Topics | My Pace Learn{% endblock title %}</title>
+{% block extracss %}
+<link rel="stylesheet" href="{% static 'core/css/topics.css' %}">
+{% endblock extracss %}
+
+
+{% block content %}
+
+
+<!-- Topics Section -->
+<section class="topics-section">
+  <div class="topics-container">
+    
+    <!-- Page Header with Subject Info -->
+    <div class="page-header">
+      <a href="{% url 'subjects' %}" class="back-link">
+        <i class="fas fa-arrow-left"></i> Back to Subjects
+      </a>
+      <div class="subject-header">
+        <div class="subject-icon-large">
+          <i class="{{ subject.icon }}"></i>
+        </div>
+        <div class="subject-title">
+          <h1>{{ subject.name }}</h1>
+          <p>{{ subject.description }}</p>
+          <div class="subject-meta">
+            <span><i class="fas fa-layer-group"></i> {{ topics|length }} Topics</span>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Topics Grid -->
+    <div class="topics-grid">
+      {% for topic in topics %}
+      <div class="topic-card">
+        <div class="topic-number">{{ forloop.counter }}</div>
+        <div class="topic-content">
+          <h3>{{ topic.name }}</h3>
+          <p>{{ topic.short_description|truncatechars:100 }}</p>
+          <div class="topic-meta">
+            <span><i class="fas fa-clock"></i> {{ topic.estimated_minutes|default:"15" }} mins</span>
+            <span><i class="fas fa-question"></i> {{ topic.question_count|default:"0" }} questions</span>
+          </div>
+          <a href="#" class="btn-view">
+            View Topic <i class="fas fa-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+      {% empty %}
+      <div class="empty-state">
+        <i class="fas fa-folder-open"></i>
+        <p>No topics available yet.</p>
+        <p class="empty-hint">Check back soon for new topics!</p>
+      </div>
+      {% endfor %}
+    </div>
+
+  </div>
+</section>
+
+
+{% endblock content %}
+
+{% block extrajs %}
+<script src="{% static 'core/js/topics.js' %}"></script>
+{% endblock extrajs %}
