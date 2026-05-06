@@ -1,0 +1,122 @@
+{% extends 'main.html' %}
+{% load static %}
+
+<title>{% block title %}Login | CompuQuiz{% endblock title %}</title>
+{% block extracss %}
+<link rel="stylesheet" href="{% static 'core/css/login.css' %}">
+{% endblock extracss %}
+
+
+{% block content %}
+<!-- Login Section -->
+<section class="login-section">
+  <div class="login-container">
+    <!-- Left side - Login Form -->
+    <div class="login-form-wrapper">
+      <div class="login-header">
+        <div class="login-icon">
+          <i class="fas fa-laptop-code"></i>
+        </div>
+        <h1>Welcome Back!</h1>
+        <p>Login to continue your Computer Studies journey</p>
+      </div>
+
+      <form method="POST" action="{% url 'login' %}" class="login-form" id="loginForm">
+        {% csrf_token %}
+        
+        <!-- Email Field -->
+        <div class="form-group">
+          <label for="email">
+            <i class="fas fa-envelope"></i>
+            Email Address
+          </label>
+          <input type="email" id="email" name="email" required placeholder="student@example.com" autocomplete="email">
+        </div>
+
+        <!-- Password Field -->
+        <div class="form-group">
+          <label for="password">
+            <i class="fas fa-lock"></i>
+            Password
+          </label>
+          <input type="password" id="password" name="password" required placeholder="Enter your password">
+          <button type="button" class="toggle-password" id="togglePassword">
+            <i class="fas fa-eye"></i>
+          </button>
+        </div>
+
+        <!-- Remember Me & Forgot Password -->
+        <div class="form-options">
+          <label class="remember-me">
+            <input type="checkbox" name="remember_me">
+            <span>Remember me</span>
+          </label>
+          <a href="#" class="forgot-password">Forgot Password?</a>
+        </div>
+
+        <!-- Login Button -->
+        <button type="submit" class="login-btn">
+          <i class="fas fa-sign-in-alt"></i>
+          Login to Your Account
+        </button>
+
+        <!-- Demo Account Notice -->
+        <div class="demo-notice">
+          <i class="fas fa-info-circle"></i>
+          <span>Demo: student@example.com / password123</span>
+        </div>
+
+        <!-- Signup Link -->
+        <div class="signup-link">
+          Don't have an account? <a href="{% url 'signup' %}">Create one now</a>
+        </div>
+      </form>
+    </div>
+
+    <!-- Right side - Info/Illustration -->
+    <div class="login-info-wrapper">
+      <div class="info-content">
+        <div class="quote-icon">
+          <i class="fas fa-quote-right"></i>
+        </div>
+        <blockquote>
+          "The future belongs to those who understand technology. Start your journey today!"
+        </blockquote>
+        <div class="info-benefits">
+          <div class="benefit">
+            <i class="fas fa-chart-simple"></i>
+            <div>
+              <h4>Track Progress</h4>
+              <p>See your improvement over time</p>
+            </div>
+          </div>
+          <div class="benefit">
+            <i class="fas fa-trophy"></i>
+            <div>
+              <h4>Earn Badges</h4>
+              <p>Get rewarded for achievements</p>
+            </div>
+          </div>
+          <div class="benefit">
+            <i class="fas fa-clock"></i>
+            <div>
+              <h4>Learn at Your Pace</h4>
+              <p>24/7 access to all quizzes</p>
+            </div>
+          </div>
+        </div>
+        <div class="trust-badge">
+          <i class="fas fa-shield-heart"></i>
+          <span>Trusted by 10,000+ students</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+{% endblock content %}
+
+{% block extrajs %}
+<script src="{% static 'core/js/login.js' %}"></script>
+{% endblock extrajs %}

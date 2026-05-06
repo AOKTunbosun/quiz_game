@@ -1,0 +1,205 @@
+{% extends 'main.html' %}
+{% load static %}
+
+<title>{% block title %}Dashboard | CompuQuiz{% endblock title %}</title>
+{% block extracss %}
+<link rel="stylesheet" href="{% static 'core/css/dashboard.css' %}">
+{% endblock extracss %}
+
+
+{% block content %}
+
+<!-- Dashboard Section -->
+<section class="dashboard-section">
+    <div class="dashboard-container">
+
+        <!-- Welcome Header with Student Info -->
+        <div class="dashboard-header">
+            <div class="welcome-area">
+                <div class="student-avatar">
+                    <span class="avatar-initials">
+                        {{ request.user.first_name|first }}{{ request.user.last_name|first }}
+                    </span>
+                </div>
+                <div class="welcome-text">
+                    <h1>Welcome back, {{ request.user.first_name }}!</h1>
+                    <p>Ready to boost your Computer Studies knowledge?</p>
+                </div>
+            </div>
+            <div class="student-badge">
+                <i class="fas fa-graduation-cap"></i>
+                <span>{{ request.user.current_class|default:"SS1" }}</span>
+            </div>
+        </div>
+
+        <!-- Student Info Cards Row -->
+        <div class="info-cards">
+            <div class="info-card">
+                <i class="fas fa-school"></i>
+                <div class="info-details">
+                    <span class="info-label">School</span>
+                    <span class="info-value">{{ request.user.school_name|default:"Springfield High School" }}</span>
+                </div>
+            </div>
+            <div class="info-card">
+                <i class="fas fa-user-graduate"></i>
+                <div class="info-details">
+                    <span class="info-label">Class/Level</span>
+                    <span class="info-value">{{ request.user.current_class|default:"SS1" }}</span>
+                </div>
+            </div>
+            <div class="info-card">
+                <i class="fas fa-envelope"></i>
+                <div class="info-details">
+                    <span class="info-label">Email</span>
+                    <span class="info-value">{{ request.user.email }}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Overview Cards Row -->
+        <div class="overview-cards">
+            <div class="overview-card">
+                <div class="card-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="card-stats">
+                    <span class="stat-number">{{ total_quizzes_taken|default:"0" }}</span>
+                    <span class="stat-label">Quizzes Taken</span>
+                </div>
+            </div>
+
+            <div class="overview-card">
+                <div class="card-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="card-stats">
+                    <span class="stat-number">{{ request.user.average_score|default:"0" }}%</span>
+                    <span class="stat-label">Average Score</span>
+                </div>
+            </div>
+
+            <div class="overview-card">
+                <div class="card-icon">
+                    <i class="fas fa-star"></i>
+                </div>
+                <div class="card-stats">
+                    <span class="stat-number">{{ request.user.best_score|default:"0" }}%</span>
+                    <span class="stat-label">Best Score</span>
+                </div>
+            </div>
+
+            <div class="overview-card">
+                <div class="card-icon">
+                    <i class="fas fa-tasks"></i>
+                </div>
+                <div class="card-stats">
+                    <span class="stat-number">{{ pending_quizzes|default:"0" }}</span>
+                    <span class="stat-label">Quizzes Left</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Grid -->
+        <div class="dashboard-grid">
+
+            <!-- Recommended Topics Section -->
+            <div class="dashboard-card recommended-card">
+                <div class="card-header">
+                    <h3><i class="fas fa-lightbulb"></i> Recommended for You</h3>
+                    <span class="card-subtitle">Based on your recent performance</span>
+                </div>
+                <div class="recommended-list">
+                    {% for topic in recommended_topics %}
+                    <div class="recommended-item">
+                        <div class="topic-info">
+                            <i class="fas fa-microchip"></i>
+                            <div>
+                                <h4>{{ topic.name }}</h4>
+                                <p>{{ topic.description|truncatechars:50 }}</p>
+                            </div>
+                        </div>
+                        <div class="topic-difficulty">
+                            <span class="difficulty-badge {{ topic.difficulty }}">{{ topic.difficulty }}</span>
+                            <a href="#" class="btn-recommended">Start →</a>
+
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="empty-state">
+                        <i class="fas fa-smile-wink"></i>
+                        <p>Great job! You've mastered all recommended topics.</p>
+                        <a href="#" class="btn-secondary">Explore More Topics</a>
+
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Available Quizzes Section -->
+            <div class="dashboard-card available-card">
+                <div class="card-header">
+                    <h3><i class="fas fa-play-circle"></i> Available Quizzes</h3>
+                    <a href="#" class="view-all">View All →</a>
+
+                </div>
+                <div class="quizzes-list">
+                    {% for quiz in available_quizzes %}
+                    <div class="quiz-item">
+                        <div class="quiz-info">
+                            <i class="fas {{ quiz.icon|default:'fa-question-circle' }}"></i>
+                            <div>
+                                <h4>{{ quiz.title }}</h4>
+                                <div class="quiz-meta">
+                                    <span><i class="fas fa-clock"></i> {{ quiz.time_minutes }} mins</span>
+                                    <span><i class="fas fa-question"></i> {{ quiz.question_count }} questions</span>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#" class="btn-start">Take Quiz →</a>
+
+                    </div>
+                    {% empty %}
+                    <div class="empty-state">
+                        <i class="fas fa-folder-open"></i>
+                        <p>No quizzes available at the moment.</p>
+                        <p class="empty-hint">Check back soon for new quizzes!</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions Section -->
+        <div class="quick-actions">
+            <div class="action-card">
+                <i class="fas fa-play"></i>
+                <h4>Start New Quiz</h4>
+                <p>Test your knowledge with a fresh quiz</p>
+                <a href="#" class="action-btn">Start Now →</a>
+
+            </div>
+            <div class="action-card">
+                <i class="fas fa-chart-simple"></i>
+                <h4>View My Results</h4>
+                <p>Check your performance history</p>
+                <a href="#" class="action-btn">View Report →</a>
+
+            </div>
+            <div class="action-card">
+                <i class="fas fa-book-open"></i>
+                <h4>Computer Studies</h4>
+                <p>Review course materials</p>
+                <a href="#" class="action-btn">Learn More →</a>
+
+            </div>
+        </div>
+
+    </div>
+</section>
+
+{% endblock content %}
+
+{% block extrajs %}
+<script src="{% static 'core/js/dashboard.js' %}"></script>
+{% endblock extrajs %}

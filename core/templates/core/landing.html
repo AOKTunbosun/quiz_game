@@ -1,0 +1,196 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block extracss %}
+<link rel="stylesheet" href="{% static 'core/css/landing.css' %}">
+{% endblock extracss %}
+
+
+{% block content %}
+
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-container">
+        <div class="hero-content">
+            <div class="hero-badge">
+                <i class="fas fa-graduation-cap"></i> For Secondary School Students
+            </div>
+            <h1 class="hero-title">
+                Master <span class="gradient-text">Computer Studies</span><br>
+                Through Interactive Quizzes
+            </h1>
+            <p class="hero-description">
+                Fun, engaging, and curriculum-aligned quizzes designed to help JSS & SSS students excel in Computer
+                Studies. Track your progress, earn badges, and become a tech pro!
+            </p>
+            <div class="hero-buttons">
+                <button class="btn-primary" id="startQuizBtn">
+                    <i class="fas fa-play"></i> Start Learning Now
+                </button>
+                <button class="btn-secondary" id="demoQuizBtn">
+                    <i class="fas fa-chalkboard"></i> Try Demo Quiz
+                </button>
+            </div>
+            <div class="hero-stats">
+                <div class="stat">
+                    <span class="stat-number">500+</span>
+                    <span class="stat-label">Quiz Questions</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">15+</span>
+                    <span class="stat-label">Computer Topics</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">10k+</span>
+                    <span class="stat-label">Active Students</span>
+                </div>
+            </div>
+        </div>
+        <div class="hero-image">
+            <div class="floating-card card-1">
+                <i class="fas fa-laptop-code"></i>
+                <span>Hardware Basics</span>
+            </div>
+            <div class="floating-card card-2">
+                <i class="fas fa-network-wired"></i>
+                <span>Networking</span>
+            </div>
+            <div class="floating-card card-3">
+                <i class="fas fa-database"></i>
+                <span>Data Storage</span>
+            </div>
+            <div class="floating-card card-4">
+                <i class="fas fa-shield-alt"></i>
+                <span>Cyber Security</span>
+            </div>
+            <div class="hero-illustration">
+                <i class="fas fa-brain"></i>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section id="features" class="features">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-badge">Why Choose Us</span>
+            <h2>Amazing Features for <span class="gradient-text">Young Learners</span></h2>
+            <p>Designed specifically for secondary school students to make learning computer studies enjoyable</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-question-circle"></i>
+                </div>
+                <h3>Interactive Quizzes</h3>
+                <p>Engaging multiple-choice questions with instant feedback to reinforce learning</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h3>Track Progress</h3>
+                <p>Monitor your improvement with detailed performance analytics and reports</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-medal"></i>
+                </div>
+                <h3>Achievement Badges</h3>
+                <p>Earn cool badges and certificates as you master different computer topics</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <h3>Timed Challenges</h3>
+                <p>Test your speed with timed quizzes and compete with classmates</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-book-open"></i>
+                </div>
+                <h3>Curriculum Aligned</h3>
+                <p>Content follows WAEC/NECO/JAMB computer studies syllabus</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-mobile-alt"></i>
+                </div>
+                <h3>Learn Anywhere</h3>
+                <p>Fully responsive design for mobile, tablet, and desktop devices</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Topics Section -->
+<section id="topics" class="topics">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-badge">What You'll Learn</span>
+            <h2>Comprehensive <span class="gradient-text">Computer Topics</span></h2>
+            <p>From basics to advanced concepts - everything a secondary school student needs</p>
+        </div>
+        <div class="topics-grid">
+            <div class="topic-card">
+                <i class="fas fa-desktop"></i>
+                <h3>Computer Hardware</h3>
+                <p>CPU, RAM, storage devices, input/output units</p>
+                <span class="topic-count">85+ Questions</span>
+            </div>
+            <div class="topic-card">
+                <i class="fas fa-code"></i>
+                <h3>Software Concepts</h3>
+                <p>System software, application software, programming basics</p>
+                <span class="topic-count">70+ Questions</span>
+            </div>
+            <div class="topic-card">
+                <i class="fas fa-wifi"></i>
+                <h3>Networking & Internet</h3>
+                <p>LAN, WAN, internet basics, web browsers, email</p>
+                <span class="topic-count">60+ Questions</span>
+            </div>
+            <div class="topic-card">
+                <i class="fas fa-history"></i>
+                <h3>History of Computers</h3>
+                <p>Generations of computers, pioneers, evolution</p>
+                <span class="topic-count">45+ Questions</span>
+            </div>
+            <div class="topic-card">
+                <i class="fas fa-database"></i>
+                <h3>Data Processing</h3>
+                <p>Data vs information, file organization, database basics</p>
+                <span class="topic-count">55+ Questions</span>
+            </div>
+            <div class="topic-card">
+                <i class="fas fa-shield-virus"></i>
+                <h3>Cyber Security</h3>
+                <p>Online safety, viruses, firewalls, ethical practices</p>
+                <span class="topic-count">50+ Questions</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta">
+    <div class="container">
+        <div class="cta-content">
+            <h2>Ready to Start Your Computer Studies Journey?</h2>
+            <p>Join thousands of students who are improving their computer knowledge with CompuQuiz</p>
+            <div class="cta-buttons">
+                <button class="btn-primary btn-large" id="ctaSignupBtn">
+                    <i class="fas fa-user-graduate"></i> Create Free Account
+                </button>
+                <button class="btn-secondary btn-large" id="ctaDemoBtn">
+                    <i class="fas fa-eye"></i> View Demo Quiz
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+{% endblock content %}

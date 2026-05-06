@@ -1,0 +1,239 @@
+{% extends 'main.html' %}
+{% load static %}
+
+<title>{% block title %}Sign Up | CompuQuiz{% endblock title %}</title>
+{% block extracss %}
+<link rel="stylesheet" href="{% static 'core/css/signup.css' %}">
+{% endblock extracss %}
+
+
+{% block content %}
+
+<!-- Signup Section -->
+<section class="signup-section">
+  <div class="signup-container">
+    <!-- Left side - Form -->
+    <div class="signup-form-wrapper">
+      <div class="signup-header">
+        <h1>Create Student Account</h1>
+        <p>Join thousands of students learning Computer Studies</p>
+      </div>
+
+      <form method="POST" action="{% url 'signup' %}" class="signup-form" id="signupForm">
+        {% csrf_token %}
+
+        <!-- Row 1: First Name & Last Name -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="firstName">
+              <i class="fas fa-user"></i>
+              First Name <span class="required">*</span>
+            </label>
+            <input type="text" id="firstName" name="first_name" required placeholder="Enter first name">
+          </div>
+
+          <div class="form-group">
+            <label for="lastName">
+              <i class="fas fa-user"></i>
+              Last Name <span class="required">*</span>
+            </label>
+            <input type="text" id="lastName" name="last_name" required placeholder="Enter last name">
+          </div>
+        </div>
+
+        <!-- Row 2: Email Address -->
+        <div class="form-group full-width">
+          <label for="email">
+            <i class="fas fa-envelope"></i>
+            Email Address <span class="required">*</span>
+          </label>
+          <input type="email" id="email" name="email" required placeholder="student@example.com">
+        </div>
+
+        <!-- Row 3: Password & Confirm Password -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="password">
+              <i class="fas fa-lock"></i>
+              Password <span class="required">*</span>
+            </label>
+            <input type="password" id="password" name="password" required placeholder="Create a password">
+            <div class="password-strength" id="passwordStrength"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="confirmPassword">
+              <i class="fas fa-check-circle"></i>
+              Confirm Password <span class="required">*</span>
+            </label>
+            <input type="password" id="confirmPassword" name="confirm_password" required
+              placeholder="Confirm your password">
+            <div class="password-match" id="passwordMatch"></div>
+          </div>
+        </div>
+
+        <!-- Row 4: Current Class/Level (Dropdown) -->
+        <div class="form-group full-width">
+          <label for="classLevel">
+            <i class="fas fa-graduation-cap"></i>
+            Current Class/Level <span class="required">*</span>
+          </label>
+          <select id="classLevel" name="class_level" required>
+            <option value="" disabled selected>Select your class</option>
+            <option value="SS1">SS 1</option>
+            <option value="SS2">SS 2</option>
+            <option value="SS3">SS 3</option>
+          </select>
+          <i class="fas fa-chevron-down dropdown-icon"></i>
+        </div>
+
+        <!-- Row 5: School Name -->
+        <div class="form-group full-width">
+          <label for="schoolName">
+            <i class="fas fa-school"></i>
+            School Name <span class="required">*</span>
+          </label>
+          <input type="text" id="schoolName" name="school_name" required placeholder="Enter your school name">
+        </div>
+
+        <!-- Row 6: Mother's Name & Father's Name -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="motherName">
+              <i class="fas fa-female"></i>
+              Mother's Name <span class="required">*</span>
+            </label>
+            <input type="text" id="motherName" name="mother_name" required placeholder="Mother's full name">
+          </div>
+
+          <div class="form-group">
+            <label for="fatherName">
+              <i class="fas fa-male"></i>
+              Father's Name <span class="required">*</span>
+            </label>
+            <input type="text" id="fatherName" name="father_name" required placeholder="Father's full name">
+          </div>
+        </div>
+
+        <!-- Row 7: Student Phone & Parents Phone -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="studentPhone">
+              <i class="fas fa-mobile-alt"></i>
+              Student Phone Number <span class="required">*</span>
+            </label>
+            <input type="tel" id="studentPhone" name="student_phone" required placeholder="e.g., 08012345678">
+          </div>
+
+          <div class="form-group">
+            <label for="parentPhone">
+              <i class="fas fa-phone-alt"></i>
+              Parent's Phone Number <span class="required">*</span>
+            </label>
+            <input type="tel" id="parentPhone" name="parent_phone" required placeholder="e.g., 08012345678">
+          </div>
+        </div>
+
+        <!-- Row 8: Parent's Gmail (Optional) -->
+        <div class="form-group full-width">
+          <label for="parentGmail">
+            <i class="fab fa-google"></i>
+            Parent's Gmail <span class="optional">(Optional)</span>
+          </label>
+          <input type="email" id="parentGmail" name="parent_gmail" placeholder="parent@gmail.com">
+          <small class="field-hint">Used for parent notifications about quiz performance</small>
+        </div>
+
+        <!-- Row 9: Address -->
+        <div class="form-group full-width">
+          <label for="address">
+            <i class="fas fa-home"></i>
+            Home Address <span class="required">*</span>
+          </label>
+          <textarea id="address" name="address" rows="3" required
+            placeholder="Enter your full residential address"></textarea>
+        </div>
+
+        <!-- Terms & Conditions -->
+        <div class="terms-checkbox">
+          <input type="checkbox" id="terms" name="terms" required>
+          <label for="terms">
+            I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+          </label>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="signup-btn">
+          <i class="fas fa-user-plus"></i>
+          Create Account
+        </button>
+
+        <!-- Login Link -->
+        <div class="login-link">
+          Already have an account? <a href="{% url 'login' %}">Login here</a>
+        </div>
+      </form>
+    </div>
+
+    <!-- Right side - Info/Illustration -->
+    <div class="signup-info-wrapper">
+      <div class="info-content">
+        <div class="info-badge">
+          <i class="fas fa-graduation-cap"></i> Join the Smart Generation
+        </div>
+        <h2>Start Your Computer Studies Journey Today</h2>
+        <div class="info-features">
+          <div class="info-feature">
+            <i class="fas fa-check-circle"></i>
+            <div>
+              <h4>Free Access</h4>
+              <p>All basic quizzes are completely free</p>
+            </div>
+          </div>
+          <div class="info-feature">
+            <i class="fas fa-chart-line"></i>
+            <div>
+              <h4>Track Progress</h4>
+              <p>Monitor your improvement over time</p>
+            </div>
+          </div>
+          <div class="info-feature">
+            <i class="fas fa-medal"></i>
+            <div>
+              <h4>Earn Certificates</h4>
+              <p>Get rewarded for your achievements</p>
+            </div>
+          </div>
+          <div class="info-feature">
+            <i class="fas fa-users"></i>
+            <div>
+              <h4>Parent Dashboard</h4>
+              <p>Parents can monitor your performance</p>
+            </div>
+          </div>
+        </div>
+        <div class="info-stats">
+          <div class="stat">
+            <span class="stat-number">500+</span>
+            <span class="stat-label">Quiz Questions</span>
+          </div>
+          <div class="stat">
+            <span class="stat-number">15+</span>
+            <span class="stat-label">Topics Covered</span>
+          </div>
+          <div class="stat">
+            <span class="stat-number">10k+</span>
+            <span class="stat-label">Active Students</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+{% endblock content %}
+
+{% block extrajs %}
+<script src="{% static 'core/js/signup.js' %}"></script>
+{% endblock extrajs %}
