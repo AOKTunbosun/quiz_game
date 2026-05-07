@@ -1,0 +1,282 @@
+/* Topic Info Page Styles */
+.topicinfo-section {
+  min-height: calc(100vh - 140px);
+  padding: 2rem;
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+}
+
+.topicinfo-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* Navigation Links */
+.nav-links {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #f39c12;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: all 0.3s;
+}
+
+.back-link:hover {
+  transform: translateX(-3px);
+  color: #e67e22;
+}
+
+.breadcrumb {
+  font-size: 0.85rem;
+  color: #888;
+}
+
+.breadcrumb i {
+  margin: 0 0.5rem;
+  font-size: 0.7rem;
+  color: #f39c12;
+}
+
+.breadcrumb .current {
+  color: #f39c12;
+  font-weight: 500;
+}
+
+/* Topic Header */
+.topic-header {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: rgba(20, 20, 30, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  margin-top: 4rem;
+}
+
+.topic-icon {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, rgba(243, 156, 18, 0.1), rgba(230, 126, 34, 0.05));
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.topic-icon i {
+  font-size: 2.5rem;
+  color: #f39c12;
+}
+
+.topic-title h1 {
+  font-size: 1.8rem;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+}
+
+.topic-stats {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.topic-stats span {
+  font-size: 0.85rem;
+  color: #888;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.topic-stats span i {
+  color: #f39c12;
+}
+
+/* Info Cards */
+.info-card {
+  background: rgba(20, 20, 30, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+  transition: all 0.3s;
+}
+
+.info-card:hover {
+  border-color: rgba(243, 156, 18, 0.2);
+}
+
+.card-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1.2rem 1.5rem;
+  background: rgba(0, 0, 0, 0.2);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.card-title i {
+  font-size: 1.3rem;
+  color: #f39c12;
+}
+
+.card-title h2 {
+  font-size: 1.2rem;
+  color: #ffffff;
+}
+
+.card-content {
+  padding: 1.5rem;
+  color: #b0b0b0;
+  line-height: 1.6;
+}
+
+.card-content p {
+  margin-bottom: 1rem;
+}
+
+/* Objectives List */
+.objectives-list {
+  list-style: none;
+  margin-top: 1rem;
+}
+
+.objectives-list li {
+  padding: 0.5rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: #b0b0b0;
+  font-size: 0.95rem;
+}
+
+.objectives-list li i {
+  color: #2ecc71;
+  font-size: 0.9rem;
+}
+
+/* Quiz Action Button */
+.quiz-action {
+  background: linear-gradient(135deg, rgba(243, 156, 18, 0.1), rgba(230, 126, 34, 0.05));
+  border: 1px solid rgba(243, 156, 18, 0.2);
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin-top: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.action-message {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex: 1;
+}
+
+.action-message i {
+  font-size: 2rem;
+  color: #f39c12;
+}
+
+.action-message h3 {
+  color: #ffffff;
+  margin-bottom: 0.25rem;
+  font-size: 1.1rem;
+}
+
+.action-message p {
+  color: #b0b0b0;
+  font-size: 0.85rem;
+}
+
+.btn-start-quiz {
+  background: linear-gradient(135deg, #f39c12, #e67e22);
+  color: #0a0a0a;
+  text-decoration: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  transition: all 0.3s;
+  white-space: nowrap;
+}
+
+.btn-start-quiz:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 20px rgba(243, 156, 18, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .topicinfo-section {
+    padding: 1rem;
+  }
+  
+  .topic-header {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .topic-icon {
+    margin: 0 auto;
+  }
+  
+  .topic-title h1 {
+    font-size: 1.4rem;
+  }
+  
+  .topic-stats {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  .nav-links {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .quiz-action {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .action-message {
+    flex-direction: column;
+  }
+  
+  .btn-start-quiz {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .card-title {
+    padding: 1rem;
+  }
+  
+  .card-title h2 {
+    font-size: 1rem;
+  }
+  
+  .card-content {
+    padding: 1rem;
+  }
+}

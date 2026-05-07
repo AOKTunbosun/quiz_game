@@ -1,0 +1,225 @@
+{% extends 'main.html' %}
+{% load static %}
+
+<title>{% block title %}Profile | My Pace Learn{% endblock title %}</title>
+{% block extracss %}
+<link rel="stylesheet" href="{% static 'core/css/profile_settings.css' %}">
+{% endblock extracss %}
+
+
+{% block content %}
+
+
+<!-- Profile Settings Section -->
+<section class="profile-section">
+  <div class="profile-container">
+    
+    <!-- Page Header -->
+    <div class="page-header">
+      <h1><i class="fas fa-user-cog"></i> Profile Settings</h1>
+      <p>Manage your personal information and account settings</p>
+    </div>
+
+    <div class="profile-grid">
+      
+      <!-- Left Side - Profile Avatar & Info -->
+      <div class="profile-sidebar">
+        <div class="avatar-section">
+          <div class="profile-avatar">
+            <span class="avatar-initials">{{ request.user.first_name|first }}{{ request.user.last_name|first }}</span>
+          </div>
+          <h3>{{ request.user.first_name }} {{ request.user.last_name }}</h3>
+          <p>{{ student.class_level|default:"SS1" }} Student</p>
+        </div>
+        
+        <div class="sidebar-menu">
+          <a href="#" class="sidebar-link active" data-tab="personal">
+            <i class="fas fa-user"></i> Personal Info
+          </a>
+          <a href="#" class="sidebar-link" data-tab="account">
+            <i class="fas fa-lock"></i> Account Security
+          </a>
+          <a href="#" class="sidebar-link" data-tab="parents">
+            <i class="fas fa-users"></i> Parent/Guardian Info
+          </a>
+          <a href="#" class="sidebar-link" data-tab="address">
+            <i class="fas fa-home"></i> Address
+          </a>
+        </div>
+      </div>
+
+      <!-- Right Side - Forms -->
+      <div class="profile-content">
+        
+        <!-- Personal Info Tab -->
+        <div id="personal-tab" class="tab-content active">
+          <div class="tab-header">
+            <h2><i class="fas fa-user"></i> Personal Information</h2>
+            <p>Update your personal details</p>
+          </div>
+          
+          <form method="POST" action="#" class="profile-form">
+            {% csrf_token %}
+            <input type="hidden" name="form_type" value="personal">
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label for="firstName">First Name</label>
+                <input type="text" id="firstName" name="first_name" value="{{ request.user.first_name }}" required>
+              </div>
+              
+              <div class="form-group">
+                <label for="lastName">Last Name</label>
+                <input type="text" id="lastName" name="last_name" value="{{ request.user.last_name }}" required>
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="email">Email Address</label>
+              <input type="email" id="email" name="email" value="{{ request.user.email }}" required>
+            </div>
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label for="classLevel">Class/Level</label>
+                <select id="classLevel" name="class_level" required>
+                  <option value="SS1" {% if student.class_level == "SS1" %}selected{% endif %}>SS 1</option>
+                  <option value="SS2" {% if student.class_level == "SS2" %}selected{% endif %}>SS 2</option>
+                  <option value="SS3" {% if student.class_level == "SS3" %}selected{% endif %}>SS 3</option>
+                </select>
+              </div>
+              
+              <div class="form-group">
+                <label for="schoolName">School Name</label>
+                <input type="text" id="schoolName" name="school_name" value="{{ student.school_name }}" required>
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="studentPhone">Phone Number</label>
+              <input type="tel" id="studentPhone" name="student_phone" value="{{ student.student_phone }}" required>
+            </div>
+            
+            <div class="form-actions">
+              <button type="submit" class="btn-save">
+                <i class="fas fa-save"></i> Save Changes
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Account Security Tab -->
+        <div id="account-tab" class="tab-content">
+          <div class="tab-header">
+            <h2><i class="fas fa-lock"></i> Account Security</h2>
+            <p>Change your password and manage security settings</p>
+          </div>
+          
+          <form method="POST" action="#" class="profile-form">
+            {% csrf_token %}
+            <input type="hidden" name="form_type" value="password">
+            
+            <div class="form-group">
+              <label for="currentPassword">Current Password</label>
+              <input type="password" id="currentPassword" name="current_password" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="newPassword">New Password</label>
+              <input type="password" id="newPassword" name="new_password" required>
+              <div class="password-strength" id="passwordStrength"></div>
+            </div>
+            
+            <div class="form-group">
+              <label for="confirmPassword">Confirm New Password</label>
+              <input type="password" id="confirmPassword" name="confirm_password" required>
+              <div class="password-match" id="passwordMatch"></div>
+            </div>
+            
+            <div class="form-actions">
+              <button type="submit" class="btn-save">
+                <i class="fas fa-key"></i> Update Password
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Parent/Guardian Info Tab -->
+        <div id="parents-tab" class="tab-content">
+          <div class="tab-header">
+            <h2><i class="fas fa-users"></i> Parent/Guardian Information</h2>
+            <p>Update your parents contact details</p>
+          </div>
+          
+          <form method="POST" action="#" class="profile-form">
+            {% csrf_token %}
+            <input type="hidden" name="form_type" value="parents">
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label for="motherName">Mother's Name</label>
+                <input type="text" id="motherName" name="mother_name" value="{{ student.mother_name }}" required>
+              </div>
+              
+              <div class="form-group">
+                <label for="fatherName">Father's Name</label>
+                <input type="text" id="fatherName" name="father_name" value="{{ student.father_name }}" required>
+              </div>
+            </div>
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label for="parentPhone">Parent's Phone Number</label>
+                <input type="tel" id="parentPhone" name="parent_phone" value="{{ student.parent_phone }}" required>
+              </div>
+              
+              <div class="form-group">
+                <label for="parentGmail">Parent's Gmail <span class="optional">(Optional)</span></label>
+                <input type="email" id="parentGmail" name="parent_gmail" value="{{ student.parent_gmail }}">
+              </div>
+            </div>
+            
+            <div class="form-actions">
+              <button type="submit" class="btn-save">
+                <i class="fas fa-save"></i> Save Changes
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Address Tab -->
+        <div id="address-tab" class="tab-content">
+          <div class="tab-header">
+            <h2><i class="fas fa-map-marker-alt"></i> Address Information</h2>
+            <p>Update your residential address</p>
+          </div>
+          
+          <form method="POST" action="#" class="profile-form">
+            {% csrf_token %}
+            <input type="hidden" name="form_type" value="address">
+            
+            <div class="form-group">
+              <label for="address">Home Address</label>
+              <textarea id="address" name="address" rows="4" required>{{ student.address }}</textarea>
+            </div>
+            
+            <div class="form-actions">
+              <button type="submit" class="btn-save">
+                <i class="fas fa-save"></i> Save Changes
+              </button>
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+{% endblock content %}
+
+{% block extrajs %}
+<script src="{% static 'core/js/profile_settings.js' %}"></script>
+{% endblock extrajs %}

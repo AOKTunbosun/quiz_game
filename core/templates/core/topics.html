@@ -46,7 +46,7 @@
             <span><i class="fas fa-clock"></i> {{ topic.estimated_minutes|default:"15" }} mins</span>
             <span><i class="fas fa-question"></i> {{ topic.question_count|default:"0" }} questions</span>
           </div>
-          <a href="#" class="btn-view">
+          <a href="{% url 'topic-info' subject_id=subject.id topic_id=topic.id %}" class="btn-view">
             View Topic <i class="fas fa-arrow-right"></i>
           </a>
         </div>

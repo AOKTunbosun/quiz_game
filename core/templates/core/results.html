@@ -1,0 +1,173 @@
+{% extends 'main.html' %}
+{% load static %}
+
+<title>{% block title %}Results | My Pace Learn{% endblock title %}</title>
+{% block extracss %}
+<link rel="stylesheet" href="{% static 'core/css/results.css' %}">
+{% endblock extracss %}
+
+
+{% block content %}
+
+<!-- Results Section -->
+<section class="results-section">
+  <div class="results-container">
+    
+    <!-- Page Header -->
+    <div class="page-header">
+      <h1><i class="fas fa-chart-line"></i> My Results</h1>
+      <p>Track your quiz performance and progress</p>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="summary-cards">
+      <div class="summary-card">
+        <div class="summary-icon">
+          <i class="fas fa-check-circle"></i>
+        </div>
+        <div class="summary-stats">
+          <span class="stat-number">{{ total_quizzes|default:"0" }}</span>
+          <span class="stat-label">Total Quizzes</span>
+        </div>
+      </div>
+      
+      <div class="summary-card">
+        <div class="summary-icon">
+          <i class="fas fa-percent"></i>
+        </div>
+        <div class="summary-stats">
+          <span class="stat-number">{{ average_score|default:"0" }}%</span>
+          <span class="stat-label">Average Score</span>
+        </div>
+      </div>
+      
+      <div class="summary-card">
+        <div class="summary-icon">
+          <i class="fas fa-trophy"></i>
+        </div>
+        <div class="summary-stats">
+          <span class="stat-number">{{ best_score|default:"0" }}%</span>
+          <span class="stat-label">Best Score</span>
+        </div>
+      </div>
+      
+      <div class="summary-card">
+        <div class="summary-icon">
+          <i class="fas fa-star"></i>
+        </div>
+        <div class="summary-stats">
+          <span class="stat-number">{{ total_correct|default:"0" }}</span>
+          <span class="stat-label">Correct Answers</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Results Table -->
+    <div class="results-table-wrapper">
+      <div class="table-header">
+        <h3><i class="fas fa-history"></i> Quiz History</h3>
+        <div class="filter-buttons">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="pass">Passed (≥50%)</button>
+          <button class="filter-btn" data-filter="fail">Failed (&lt;50%)</button>
+        </div>
+      </div>
+      
+      <div class="table-responsive">
+        <table class="results-table">
+          <thead>
+            <tr>
+              <th>S/N</th>
+              <th><i class="fas fa-book"></i> Topic</th>
+              <th><i class="fas fa-calendar"></i> Date</th>
+              <th><i class="fas fa-question"></i> Score</th>
+              <th><i class="fas fa-percent"></i> Percentage</th>
+              <th><i class="fas fa-chart-simple"></i> Performance</th>
+              <th><i class="fas fa-eye"></i> Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for result in results %}
+            <tr class="result-row" data-score="{{ result.percentage }}">
+              <td>{{ forloop.counter }}</td>
+              <td>
+                <div class="topic-cell">
+                  <i class="fas fa-microchip"></i>
+                  <span>{{ result.topic_name }}</span>
+                </div>
+              </td>
+              <td>{{ result.completed_at|date:"M d, Y" }}</td>
+              <td>{{ result.score }} / {{ result.total_questions }}</td>
+              <td>
+                <span class="percentage-badge {% if result.percentage >= 50 %}pass{% else %}fail{% endif %}">
+                  {{ result.percentage }}%
+                </span>
+              </td>
+              <td>
+                <div class="progress-bar-mini">
+                  <div class="progress-fill" style="width: {{ result.percentage }}%;"></div>
+                </div>
+              </td>
+              <td>
+                <a href="#" class="btn-view-result">
+                  <i class="fas fa-eye"></i> View
+                </a>
+              </td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td colspan="7" class="empty-table">
+                <div class="empty-state">
+                  <i class="fas fa-folder-open"></i>
+                  <p>No quiz results yet.</p>
+                  <a href="{% url 'subjects' %}" class="btn-primary">Take Your First Quiz</a>
+                </div>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      
+      <!-- Pagination -->
+      {% if results.has_other_pages %}
+      <div class="pagination">
+        {% if results.has_previous %}
+          <a href="#" class="page-link">&laquo; Previous</a>
+        {% endif %}
+        
+        {% for num in results.paginator.page_range %}
+          {% if results.number == num %}
+            <span class="page-current">{{ num }}</span>
+          {% else %}
+            <a href="#" class="page-link">{{ num }}</a>
+          {% endif %}
+        {% endfor %}
+        
+        {% if results.has_next %}
+          <a href="#" class="page-link">Next &raquo;</a>
+        {% endif %}
+      </div>
+      {% endif %}
+    </div>
+
+    <!-- Performance Tips -->
+    <div class="tips-card">
+      <div class="tips-icon">
+        <i class="fas fa-lightbulb"></i>
+      </div>
+      <div class="tips-content">
+        <h4>Pro Tip</h4>
+        <p>Review your incorrect answers and retake quizzes to improve your scores. Consistent practice leads to mastery!</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+{% endblock content %}
+
+{% block extrajs %}
+<script src="{% static 'core/js/results.js' %}"></script>
+{% endblock extrajs %}

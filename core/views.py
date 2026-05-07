@@ -217,3 +217,145 @@ class TopicsPage(View):
             }
         
         return render(request, 'core/topics.html', context)
+    
+
+class TopicInfoPage(View):
+    def get(self, request, subject_id, topic_id):
+        context = {
+            'subject': {
+                'id': 1,
+                'name': 'Computer Studies',
+            },
+            'topic': {
+                'id': 1,
+                'name': 'Computer Hardware',
+                'icon': 'fa-microchip',
+                'estimated_minutes': 20,
+                'question_count': 25,
+            },
+            'topic_info': {
+                'short_note': 'Computer hardware refers to the physical components that make up a computer system. These include the CPU (Central Processing Unit), RAM (Random Access Memory), storage devices (HDD/SSD), motherboard, power supply, and input/output devices like keyboard, mouse, and monitor.',
+                'learning_objectives': 'By the end of this topic, you will be able to:',
+                'objectives_list': [
+                    'Identify and name the major hardware components of a computer',
+                    'Explain the function of the CPU and how it processes data',
+                    'Differentiate between RAM and ROM',
+                    'List various input and output devices',
+                    'Understand storage devices and their capacities'
+                ],
+                'key_points': 'Remember: Hardware is physical (you can touch it). The CPU is the "brain" of the computer. RAM is temporary memory, storage is permanent.',
+            }
+        }
+        return render(request, 'core/topics_info.html', context)
+    
+
+class QuizPage(View):
+    def get(self, request, subject_id, topic_id):
+        context = {
+            'subject': {
+                'id': 1,
+                'name': 'Computer Studies',
+            },
+            'topic': {
+                'id': 1,
+                'name': 'Computer Hardware',
+                'question_count': 3,
+            },
+            'total_minutes': 20,
+            'questions': [
+                {
+                    'id': 1,
+                    'question_text': 'What does CPU stand for?',
+                    'option_a': 'Central Processing Unit',
+                    'option_b': 'Computer Personal Unit',
+                    'option_c': 'Central Program Utility',
+                    'option_d': 'Core Processing Union',
+                },
+                {
+                    'id': 2,
+                    'question_text': 'Which of the following is an input device?',
+                    'option_a': 'Monitor',
+                    'option_b': 'Printer',
+                    'option_c': 'Keyboard',
+                    'option_d': 'Speaker',
+                },
+                {
+                    'id': 3,
+                    'question_text': 'What is RAM?',
+                    'option_a': 'Readily Available Memory',
+                    'option_b': 'Random Access Memory',
+                    'option_c': 'Rapid Access Module',
+                    'option_d': 'Read Access Memory',
+                },
+            ]
+        }
+        return render(request, 'core/quiz.html', context)
+
+
+    def post(self, request, subject_id, topic_id):
+        pass
+
+
+class ResultsPage(View):
+    def get(self, request):
+        context = {
+            'total_quizzes': 8,
+            'average_score': 72,
+            'best_score': 95,
+            'total_correct': 142,
+            'results': [
+                {
+                    'id': 1,
+                    'topic_name': 'Computer Hardware',
+                    'completed_at': '2026-05-01',
+                    'score': 18,
+                    'total_questions': 20,
+                    'percentage': 90,
+                },
+                {
+                    'id': 2,
+                    'topic_name': 'Computer Software',
+                    'completed_at': '2026-04-28',
+                    'score': 15,
+                    'total_questions': 20,
+                    'percentage': 75,
+                },
+                {
+                    'id': 3,
+                    'topic_name': 'Networking Basics',
+                    'completed_at': '2026-04-25',
+                    'score': 10,
+                    'total_questions': 20,
+                    'percentage': 50,
+                },
+                {
+                    'id': 4,
+                    'topic_name': 'History of Computers',
+                    'completed_at': '2026-04-20',
+                    'score': 8,
+                    'total_questions': 20,
+                    'percentage': 40,
+                },
+            ]
+        }
+        return render(request, 'core/results.html', context)
+
+
+class ProfileSettingsPage(View):
+    def get(self, request):
+        context = {
+            'student': {
+                'class_level': 'SS2',
+                'school_name': 'Springfield High School',
+                'student_phone': '08012345678',
+                'mother_name': 'Mrs. Jane Doe',
+                'father_name': 'Mr. John Doe',
+                'parent_phone': '08098765432',
+                'parent_gmail': 'parent@gmail.com',
+                'address': '123 Main Street, Lagos, Nigeria',
+            }
+        }
+        return render(request, 'core/profile_settings.html', context)
+
+    def post(self, request):
+        pass

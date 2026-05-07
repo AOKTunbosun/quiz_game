@@ -50,7 +50,7 @@
             <div class="nav-buttons">
                 {% if request.user.is_authenticated %}
 
-                <a href="#">
+                <a href="{% url 'profile' %}">
                     <button class="btn-login" id="loginBtn">
                         <i class="fas fa-cog"></i> Profile settings
                     </button>

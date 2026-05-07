@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser
 
 import string
 import random
+from datetime import datetime
 
 # Create your models here.
 
@@ -56,6 +57,7 @@ class Subject(models.Model):
     description = models.CharField(max_length=250)
     icon = models.CharField(max_length=50)
     topic_count = models.IntegerField(default=0, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f'{self.name} with {self.topic_count} topics'
@@ -73,6 +75,7 @@ class Topic(models.Model):
     question_count = models.IntegerField(default=0, null=True)
     difficulty = models.CharField(max_length=20, choices=[('easy', 'easy'), ('medium', 'medium'), ('hard', 'hard')])
     order = models.IntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         ordering = ['order']
@@ -95,9 +98,41 @@ class Topic(models.Model):
 
 class TopicInfo(models.Model):
     id = models.AutoField(primary_key=True)
-    topic = models.ForeignKey(Topic, on_delete=models.CASCADE, related_name='topic_info')
+    topic = models.OneToOneField(Topic, on_delete=models.CASCADE, related_name='topic_info')
     short_note = models.TextField()
     learning_objectives = models.TextField()
+    key_points = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
 
     def __str__(self):
         return f'{self.topic.name} information'
+
+
+class QuizQuestion(models.Model):
+    id = models.AutoField(primary_key=True)
+    topic = models.ForeignKey(Topic, on_delete=models.CASCADE, related_name='quiz_questions')
+    question_text = models.TextField()
+    option_a = models.CharField(max_length=100)
+    option_b = models.CharField(max_length=100)
+    option_c = models.CharField(max_length=100)
+    option_d = models.CharField(max_length=100)
+    correct_answer = models.CharField(max_length=5, choices=[('a', 'a'), ('b', 'b'), ('c', 'c'), ('d', 'd')])
+    explanation = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.topic.name}'s question: {self.question_text}"
+    
+
+class QuizResult(models.Model):
+    id = models.AutoField(primary_key=True)
+    student = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='my_results')
+    topic = models.ForeignKey(Topic, on_delete=models.CASCADE, related_name='results')
+    score = models.IntegerField(default=0, null=True, blank=True)
+    total_questions = models.IntegerField(default=0)
+    correct_answers = models.IntegerField(default=0)
+    completed_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.student.first_name} {self.student.last_name} - {self.topic.name} result'
