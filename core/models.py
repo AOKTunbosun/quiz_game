@@ -12,27 +12,35 @@ class CustomUser(AbstractUser):
 
     email = models.EmailField(unique=True)
 
-    phone_number = models.CharField(max_length=15, default=None, null=True)
-    current_class = models.CharField(max_length=10, default=None, null=True)
-    school_name = models.CharField(max_length=150, default=None, null=True)
-    parent_phone_number = models.CharField(max_length=15, default=None, null=True)
-    mother_name = models.CharField(max_length=50, default=None, null=True)
-    father_name = models.CharField(max_length=50, default=None, null=True)
-    parent_email = models.EmailField(default=None, null=True)
+    phone_number = models.CharField(max_length=15, default=None, null=True, blank=True)
+    current_class = models.CharField(max_length=10, default=None, null=True, blank=True)
+    school_name = models.CharField(max_length=150, default=None, null=True, blank=True)
+    parent_phone_number = models.CharField(max_length=15, default=None, null=True, blank=True)
+    mother_name = models.CharField(max_length=50, default=None, null=True, blank=True)
+    father_name = models.CharField(max_length=50, default=None, null=True, blank=True)
+    parent_email = models.EmailField(default=None, null=True, blank=True)
     home_address = models.CharField(max_length=500, default=None, null=True)
-    registration_number = models.CharField(max_length=10, default=None, unique=True)
+    registration_number = models.CharField(max_length=15, default=None, unique=True, null=True, blank=True)
     best_score = models.IntegerField(default=0, null=True)
     average_score = models.IntegerField(default=0, null=True)
 
     def __str__(self):
-        return f'{self.first_name} {self.last_name} with reg num {self.registration_number}'
+        if self.registration_number:
+            return f'{self.first_name} {self.last_name} with reg num {self.registration_number}'
+        
+        return f'{self.first_name} {self.last_name}'
     
     def generate_reg_number(self):
         chars = string.ascii_letters + string.digits + '!@#$%^&*'
         while True:
             random_part = ''.join(random.choices(chars, k=6))
-            reg_number = f'{self.current_class}-{random_part}'
-            if not self.__class__.objects.filter(registration_number=reg_number):
+
+            if self.current_class:
+                reg_number = f'{self.current_class}-{random_part}'
+            else:
+                reg_number = f'ADMIN-{random_part}'
+
+            if not self.__class__.objects.filter(registration_number=reg_number).exists():
                 return reg_number
     
     def save(self, *args, **kwargs):
