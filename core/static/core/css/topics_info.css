@@ -11,14 +11,14 @@
 }
 
 /* Navigation Links */
-.nav-links {
+/* .nav-links {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 2rem;
   flex-wrap: wrap;
   gap: 1rem;
-}
+} */
 
 .back-link {
   display: inline-flex;
@@ -246,11 +246,12 @@
     justify-content: center;
     flex-wrap: wrap;
   }
-  
+/*   
   .nav-links {
     flex-direction: column;
     align-items: flex-start;
-  }
+    display: none;
+  } */
   
   .quiz-action {
     flex-direction: column;

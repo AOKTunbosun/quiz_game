@@ -7,7 +7,7 @@ from django.utils.decorators import method_decorator
 
 import uuid
 
-from .models import Subject, Topic
+from .models import *
 
 # Create your views here.
 User = get_user_model()
@@ -120,16 +120,47 @@ def logout_user(request):
 
 
 class DashboardPage(View):
-     @method_decorator(login_required)
-     def get(self, request):
-          context = {'student': {
+    @method_decorator(login_required)
+    def get(self, request):
+        results_query = QuizResult.objects.filter(student=request.user)
+
+        results = []
+        for each in results_query:
+            result_record = {
+                'score': each.score,
+                'total_questions': each.total_questions,
+                'percentage': round(each.score/each.total_questions * 100, 2),
+            }
+            results.append(result_record)
+        
+        each_score = []
+        for each in results:
+            each_score.append(each['percentage'])
+        
+        total = 0
+        for each in each_score:
+            total += each
+
+        try:
+            average_score = total/len(each_score)
+        except:
+            average_score = 0
+
+        print(results)
+        print(each_score)
+        print(total)
+        print(average_score)
+        print(max(results, key=lambda x: x['percentage'])['percentage'])
+
+
+
+        context = {'student': {
                'class_level': request.user.current_class,
                'school_name': request.user.school_name,
           },
-          'total_quizzes_taken': 15,
-          'average_score': 78,
-          'best_score': 95,
-          'pending_quizzes': 8,
+          'total_quizzes_taken': len(results),
+          'average_score': round(average_score, 2),
+          'best_score': max(results, key=lambda x: x['percentage'])['percentage'] if results else 0,
           'recommended_topics': [
                {
                     'id': 1, 
@@ -161,10 +192,10 @@ class DashboardPage(View):
                }
           ]
           }
-          return render(request, 'core/dashboard.html', context)
+        return render(request, 'core/dashboard.html', context)
      
-     def post(self, request):
-          pass
+    def post(self, request):
+        pass
      
 
 class SubjectsPage(View):
@@ -221,29 +252,35 @@ class TopicsPage(View):
 
 class TopicInfoPage(View):
     def get(self, request, subject_id, topic_id):
+        topic = Topic.objects.select_related('topic_info').get(id=topic_id)
+        
+        if topic is None:
+            subject = Subject.objects.get(id=subject_id)
+            subject_info = {
+                'id': subject.id,
+                'name': subject.name
+                }
+        
+        else:
+            subject_info = {
+                'id': topic.subject.id,
+                'name': topic.subject.name
+                }
+
+
         context = {
-            'subject': {
-                'id': 1,
-                'name': 'Computer Studies',
-            },
+            'subject': subject_info,
             'topic': {
-                'id': 1,
-                'name': 'Computer Hardware',
-                'icon': 'fa-microchip',
-                'estimated_minutes': 20,
-                'question_count': 25,
+                'id': topic.id,
+                'name': topic.name,
+                'icon': topic.subject.icon,
+                'estimated_minutes': topic.estimated_minutes,
+                'question_count': topic.question_count,
             },
             'topic_info': {
-                'short_note': 'Computer hardware refers to the physical components that make up a computer system. These include the CPU (Central Processing Unit), RAM (Random Access Memory), storage devices (HDD/SSD), motherboard, power supply, and input/output devices like keyboard, mouse, and monitor.',
-                'learning_objectives': 'By the end of this topic, you will be able to:',
-                'objectives_list': [
-                    'Identify and name the major hardware components of a computer',
-                    'Explain the function of the CPU and how it processes data',
-                    'Differentiate between RAM and ROM',
-                    'List various input and output devices',
-                    'Understand storage devices and their capacities'
-                ],
-                'key_points': 'Remember: Hardware is physical (you can touch it). The CPU is the "brain" of the computer. RAM is temporary memory, storage is permanent.',
+                'short_note': topic.topic_info.short_note,
+                'learning_objectives': topic.topic_info.learning_objectives,
+                'key_points': topic.topic_info.key_points.split(' | '),
             }
         }
         return render(request, 'core/topics_info.html', context)
@@ -251,92 +288,103 @@ class TopicInfoPage(View):
 
 class QuizPage(View):
     def get(self, request, subject_id, topic_id):
+        topic = Topic.objects.get(id=topic_id)
+        quiz_questions = QuizQuestion.objects.filter(topic=topic).order_by('order')
+
+        questions = []
+        for question in quiz_questions:
+            each = {
+                    'id': question.order,
+                    'question_text': question.question_text,
+                    'option_a': question.option_a,
+                    'option_b': question.option_b,
+                    'option_c': question.option_c,
+                    'option_d': question.option_d,
+                }
+            questions.append(each)
+
+
         context = {
             'subject': {
-                'id': 1,
-                'name': 'Computer Studies',
+                'id': topic.subject.id,
+                'name': topic.subject.name,
             },
             'topic': {
-                'id': 1,
-                'name': 'Computer Hardware',
-                'question_count': 3,
+                'id': topic.id,
+                'name': topic.name,
+                'question_count': topic.question_count,
             },
-            'total_minutes': 20,
-            'questions': [
-                {
-                    'id': 1,
-                    'question_text': 'What does CPU stand for?',
-                    'option_a': 'Central Processing Unit',
-                    'option_b': 'Computer Personal Unit',
-                    'option_c': 'Central Program Utility',
-                    'option_d': 'Core Processing Union',
-                },
-                {
-                    'id': 2,
-                    'question_text': 'Which of the following is an input device?',
-                    'option_a': 'Monitor',
-                    'option_b': 'Printer',
-                    'option_c': 'Keyboard',
-                    'option_d': 'Speaker',
-                },
-                {
-                    'id': 3,
-                    'question_text': 'What is RAM?',
-                    'option_a': 'Readily Available Memory',
-                    'option_b': 'Random Access Memory',
-                    'option_c': 'Rapid Access Module',
-                    'option_d': 'Read Access Memory',
-                },
-            ]
+            # 'total_minutes': 20,
+            'questions': questions
         }
         return render(request, 'core/quiz.html', context)
 
 
     def post(self, request, subject_id, topic_id):
-        pass
+        topic = Topic.objects.get(id=topic_id)
+        quiz_questions = QuizQuestion.objects.filter(topic=topic).order_by('order')
+
+
+        score = 0
+        correct_answers = 0
+        for x, y in zip(range(1, topic.question_count+1), quiz_questions):
+            option = request.POST.get(f'question_{x}').lower()
+            question = y
+            if option == question.correct_answer.lower():
+                score += 1
+                correct_answers += 1
+        
+        QuizResult.objects.create(
+            student=request.user,
+            topic=topic,
+            score=score,
+            total_questions=topic.question_count,
+            correct_answers=correct_answers
+        )
+
+        return redirect('results')
 
 
 class ResultsPage(View):
     def get(self, request):
+        results_query = QuizResult.objects.filter(student=request.user)
+
+        results = []
+        for each in results_query:
+            result_record = {
+                'id': each.id,
+                'topic_name': each.topic.name,
+                'completed_at': each.completed_at,
+                'score': each.score,
+                'total_questions': each.total_questions,
+                'percentage': round(each.score/each.total_questions * 100, 2),
+            }
+            results.append(result_record)
+
+        
+        total_correct = 0
+        for each in results_query:
+            total_correct += each.correct_answers
+
+        each_score = []
+        for each in results:
+            each_score.append(each['percentage'])
+        
+        total = 0
+        for each in each_score:
+            total += each
+
+        try:
+            average_score = total/len(each_score)
+        except:
+            average_score = 0
+
         context = {
-            'total_quizzes': 8,
-            'average_score': 72,
-            'best_score': 95,
-            'total_correct': 142,
-            'results': [
-                {
-                    'id': 1,
-                    'topic_name': 'Computer Hardware',
-                    'completed_at': '2026-05-01',
-                    'score': 18,
-                    'total_questions': 20,
-                    'percentage': 90,
-                },
-                {
-                    'id': 2,
-                    'topic_name': 'Computer Software',
-                    'completed_at': '2026-04-28',
-                    'score': 15,
-                    'total_questions': 20,
-                    'percentage': 75,
-                },
-                {
-                    'id': 3,
-                    'topic_name': 'Networking Basics',
-                    'completed_at': '2026-04-25',
-                    'score': 10,
-                    'total_questions': 20,
-                    'percentage': 50,
-                },
-                {
-                    'id': 4,
-                    'topic_name': 'History of Computers',
-                    'completed_at': '2026-04-20',
-                    'score': 8,
-                    'total_questions': 20,
-                    'percentage': 40,
-                },
-            ]
+            'total_quizzes': len(results),
+            'average_score': round(average_score, 2),
+            'best_score': max(results, key=lambda x: x['percentage'])['percentage'] if results else 0,
+            'total_correct': total_correct,
+            'results': results
         }
         return render(request, 'core/results.html', context)
 

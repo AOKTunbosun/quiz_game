@@ -61,13 +61,6 @@
         </div>
         <div class="card-content">
           <p>{{ topic_info.learning_objectives|default:"By the end of this topic, you will have a solid understanding of the key concepts." }}</p>
-          {% if topic_info.objectives_list %}
-          <ul class="objectives-list">
-            {% for objective in topic_info.objectives_list %}
-            <li><i class="fas fa-check-circle"></i> {{ objective }}</li>
-            {% endfor %}
-          </ul>
-          {% endif %}
         </div>
       </div>
 
@@ -79,7 +72,13 @@
           <h2>Key Points to Remember</h2>
         </div>
         <div class="card-content">
-          <p>{{ topic_info.key_points }}</p>
+          {% if topic_info.key_points %}
+          <ul class="objectives-list">
+            {% for points in topic_info.key_points %}
+            <li><i class="fas fa-check-circle"></i> {{ points }}</li>
+            {% endfor %}
+          </ul>
+          {% endif %}
         </div>
       </div>
       {% endif %}

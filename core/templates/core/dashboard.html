@@ -74,7 +74,7 @@
                     <i class="fas fa-chart-line"></i>
                 </div>
                 <div class="card-stats">
-                    <span class="stat-number">{{ request.user.average_score|default:"0" }}%</span>
+                    <span class="stat-number">{{ average_score|default:"0" }}%</span>
                     <span class="stat-label">Average Score</span>
                 </div>
             </div>
@@ -84,12 +84,12 @@
                     <i class="fas fa-star"></i>
                 </div>
                 <div class="card-stats">
-                    <span class="stat-number">{{ request.user.best_score|default:"0" }}%</span>
+                    <span class="stat-number">{{ best_score|default:"0" }}%</span>
                     <span class="stat-label">Best Score</span>
                 </div>
             </div>
 
-            <div class="overview-card">
+            <!-- <div class="overview-card">
                 <div class="card-icon">
                     <i class="fas fa-tasks"></i>
                 </div>
@@ -97,7 +97,7 @@
                     <span class="stat-number">{{ pending_quizzes|default:"0" }}</span>
                     <span class="stat-label">Quizzes Left</span>
                 </div>
-            </div>
+            </div> -->
         </div>
 
         <!-- Main Content Grid -->

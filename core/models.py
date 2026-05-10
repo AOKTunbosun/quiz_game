@@ -3,7 +3,6 @@ from django.contrib.auth.models import AbstractUser
 
 import string
 import random
-from datetime import datetime
 
 # Create your models here.
 
@@ -21,9 +20,7 @@ class CustomUser(AbstractUser):
     parent_email = models.EmailField(default=None, null=True, blank=True)
     home_address = models.CharField(max_length=500, default=None, null=True)
     registration_number = models.CharField(max_length=15, default=None, unique=True, null=True, blank=True)
-    best_score = models.IntegerField(default=0, null=True)
-    average_score = models.IntegerField(default=0, null=True)
-
+    
     def __str__(self):
         if self.registration_number:
             return f'{self.first_name} {self.last_name} with reg num {self.registration_number}'
@@ -127,10 +124,25 @@ class QuizQuestion(models.Model):
     option_d = models.CharField(max_length=100)
     correct_answer = models.CharField(max_length=5, choices=[('a', 'a'), ('b', 'b'), ('c', 'c'), ('d', 'd')])
     explanation = models.TextField()
+    order = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.topic.name}'s question: {self.question_text}"
+    
+    def save(self, *args, **kwargs):
+        if not self.id:
+            self.topic.question_count += 1
+            self.topic.save(update_fields=['question_count'])
+
+        super().save(*args, **kwargs)
+    
+    def delete(self, *args, **kwargs):
+        self.topic.question_count -= 1
+        self.topic.save(update_fields=['question_count'])
+        super().delete(*args, **kwargs)
+
+
     
 
 class QuizResult(models.Model):
